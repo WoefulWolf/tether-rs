@@ -1,3 +1,6 @@
+#[cfg(not(target_env = "msvc"))]
+compile_error!("This crate must be built with the MSVC toolchain.");
+
 use std::ffi::{CString, NulError, c_void};
 
 use windows::Win32::Foundation::{HMODULE, MAX_PATH};
