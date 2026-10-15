@@ -47,16 +47,10 @@ fn error_box(result: (TetherResult, Option<String>)) {
     };
 
     let (_box1, text) = string_to_pcwstr(&buffer).expect("Failed to create MessageBoxW text.");
-    let (_box2, caption) = string_to_pcwstr(&buffer).expect("Failed to create MessageBoxW caption.");
+    let (_box2, caption) =
+        string_to_pcwstr(&buffer).expect("Failed to create MessageBoxW caption.");
 
-    unsafe {
-        MessageBoxW(
-            Some(GetActiveWindow()),
-            text,
-            caption,
-            MB_OK,
-        )
-    };
+    unsafe { MessageBoxW(Some(GetActiveWindow()), text, caption, MB_OK) };
 }
 
 fn create_tether(
@@ -122,10 +116,10 @@ fn create_tether(
 
 // dxgi
 type CreateDXGIFactoryFn =
-    extern "stdcall" fn(riid: *const GUID, ppfactory: *mut *mut c_void) -> HRESULT;
+    extern "system" fn(riid: *const GUID, ppfactory: *mut *mut c_void) -> HRESULT;
 
 #[unsafe(no_mangle)]
-unsafe extern "stdcall" fn tether_CreateDXGIFactory(
+unsafe extern "system" fn tether_CreateDXGIFactory(
     riid: *const GUID,
     ppfactory: *mut *mut c_void,
 ) -> HRESULT {
@@ -145,10 +139,10 @@ unsafe extern "stdcall" fn tether_CreateDXGIFactory(
 static LINK_DIRECTIVE_1: [u8; 51] = *b"/EXPORT:CreateDXGIFactory=tether_CreateDXGIFactory\0";
 
 type CreateDXGIFactory1Fn =
-    extern "stdcall" fn(riid: *const GUID, ppfactory: *mut *mut c_void) -> HRESULT;
+    extern "system" fn(riid: *const GUID, ppfactory: *mut *mut c_void) -> HRESULT;
 
 #[unsafe(no_mangle)]
-unsafe extern "stdcall" fn tether_CreateDXGIFactory1(
+unsafe extern "system" fn tether_CreateDXGIFactory1(
     riid: *const GUID,
     ppfactory: *mut *mut c_void,
 ) -> HRESULT {
@@ -168,10 +162,10 @@ unsafe extern "stdcall" fn tether_CreateDXGIFactory1(
 static LINK_DIRECTIVE_2: [u8; 53] = *b"/EXPORT:CreateDXGIFactory1=tether_CreateDXGIFactory1\0";
 
 type CreateDXGIFactory2Fn =
-    extern "stdcall" fn(flags: u32, riid: *const GUID, ppfactory: *mut *mut c_void) -> HRESULT;
+    extern "system" fn(flags: u32, riid: *const GUID, ppfactory: *mut *mut c_void) -> HRESULT;
 
 #[unsafe(no_mangle)]
-unsafe extern "stdcall" fn tether_CreateDXGIFactory2(
+unsafe extern "system" fn tether_CreateDXGIFactory2(
     flags: u32,
     riid: *const GUID,
     ppfactory: *mut *mut c_void,
@@ -192,7 +186,7 @@ unsafe extern "stdcall" fn tether_CreateDXGIFactory2(
 static LINK_DIRECTIVE_3: [u8; 53] = *b"/EXPORT:CreateDXGIFactory2=tether_CreateDXGIFactory2\0";
 
 // dinput8
-type DirectInput8CreateFn = extern "stdcall" fn(
+type DirectInput8CreateFn = extern "system" fn(
     hinst: HMODULE,
     dwversion: u32,
     riidltf: *const GUID,
@@ -201,7 +195,7 @@ type DirectInput8CreateFn = extern "stdcall" fn(
 ) -> HRESULT;
 
 #[unsafe(no_mangle)]
-unsafe extern "stdcall" fn tether_DirectInput8Create(
+unsafe extern "system" fn tether_DirectInput8Create(
     hinst: HMODULE,
     dwversion: u32,
     riidltf: *const GUID,
@@ -224,7 +218,7 @@ unsafe extern "stdcall" fn tether_DirectInput8Create(
 static LINK_DIRECTIVE_4: [u8; 53] = *b"/EXPORT:DirectInput8Create=tether_DirectInput8Create\0";
 
 // d3d11
-type D3D11CreateDeviceFn = extern "stdcall" fn(
+type D3D11CreateDeviceFn = extern "system" fn(
     adapter: *mut c_void,
     driver_type: u32,
     software: *mut c_void,
@@ -238,7 +232,7 @@ type D3D11CreateDeviceFn = extern "stdcall" fn(
 ) -> HRESULT;
 
 #[unsafe(no_mangle)]
-unsafe extern "stdcall" fn tether_D3D11CreateDevice(
+unsafe extern "system" fn tether_D3D11CreateDevice(
     adapter: *mut c_void,
     driver_type: u32,
     software: *mut c_void,
@@ -276,7 +270,7 @@ unsafe extern "stdcall" fn tether_D3D11CreateDevice(
 #[used]
 static LINK_DIRECTIVE_5: [u8; 51] = *b"/EXPORT:D3D11CreateDevice=tether_D3D11CreateDevice\0";
 
-type D3D11CreateDeviceAndSwapChainFn = extern "stdcall" fn(
+type D3D11CreateDeviceAndSwapChainFn = extern "system" fn(
     adapter: *mut c_void,
     driver_type: u32,
     software: *mut c_void,
@@ -292,7 +286,7 @@ type D3D11CreateDeviceAndSwapChainFn = extern "stdcall" fn(
 ) -> HRESULT;
 
 #[unsafe(no_mangle)]
-unsafe extern "stdcall" fn tether_D3D11CreateDeviceAndSwapChain(
+unsafe extern "system" fn tether_D3D11CreateDeviceAndSwapChain(
     adapter: *mut c_void,
     driver_type: u32,
     software: *mut c_void,
